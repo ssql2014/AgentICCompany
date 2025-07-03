@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI虚拟芯片设计公司 - 投资者演示文稿</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow: hidden;
+        }
+        
+        .presentation {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+            padding: 60px 80px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            overflow-y: auto;
+        }
+        
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* 标题页样式 */
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 100%);
+        }
+        
+        .title-slide h1 {
+            font-size: 72px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #00d9ff 0%, #ee00ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        
+        .title-slide .subtitle {
+            font-size: 28px;
+            color: #a0a0a0;
+            margin-bottom: 50px;
+        }
+        
+        .title-slide .tagline {
+            font-size: 36px;
+            color: #00d9ff;
+            font-weight: 300;
+        }
+        
+        /* 内容页样式 */
+        h2 {
+            font-size: 48px;
+            margin-bottom: 40px;
+            background: linear-gradient(90deg, #00d9ff 0%, #ee00ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        h3 {
+            font-size: 32px;
+            margin: 30px 0 20px;
+            color: #00d9ff;
+        }
+        
+        p {
+            font-size: 22px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+        
+        .highlight {
+            color: #ee00ff;
+            font-weight: 600;
+        }
+        
+        .big-number {
+            font-size: 72px;
+            font-weight: 800;
+            color: #00d9ff;
+            margin: 20px 0;
+        }
+        
+        /* 列表样式 */
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        li {
+            font-size: 22px;
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            color: #e0e0e0;
+        }
+        
+        li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #00d9ff;
+        }
+        
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 20px;
+        }
+        
+        th {
+            background: rgba(0, 217, 255, 0.2);
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid #00d9ff;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .card h4 {
+            font-size: 28px;
+            color: #00d9ff;
+            margin-bottom: 15px;
+        }
+        
+        /* 网格布局 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        /* 代码块样式 */
+        .code-block {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 16px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        .code-block .comment {
+            color: #666;
+        }
+        
+        .code-block .command {
+            color: #00d9ff;
+        }
+        
+        .code-block .output {
+            color: #ee00ff;
+        }
+        
+        /* 导航 */
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            background: rgba(0, 217, 255, 0.2);
+            border: 1px solid #00d9ff;
+            color: #00d9ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(0, 217, 255, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        /* 图表样式 */
+        .chart {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d9ff 0%, #ee00ff 100%);
+            transition: width 1s ease-out;
+        }
+        
+        /* 动画效果 */
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">20</span>
+        </div>
+        
+        <!-- Slide 1: 标题页 -->
+        <div class="slide title-slide active">
+            <h1>AI虚拟芯片设计公司</h1>
+            <p class="subtitle">用AI革命性降低芯片设计成本</p>
+            <p class="tagline">全球首个AI驱动的虚拟设计团队</p>
+        </div>
+        
+        <!-- Slide 2: 执行摘要 -->
+        <div class="slide">
+            <h2>核心价值主张</h2>
+            <div class="grid">
+                <div class="card fade-in">
+                    <h4>革命性创新</h4>
+                    <p>不是卖工具，而是直接交付设计成果</p>
+                    <p>AI虚拟团队7×24小时工作</p>
+                </div>
+                <div class="card fade-in" style="animation-delay: 0.2s">
+                    <h4>巨大价值</h4>
+                    <p class="big-number">50%</p>
+                    <p>成本降低</p>
+                    <p class="big-number">70%</p>
+                    <p>周期缩短</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 3: 行业危机 -->
+        <div class="slide">
+            <h2>一个处于断裂点的行业</h2>
+            <div class="grid">
+                <div>
+                    <h3>人才危机</h3>
+                    <p class="big-number">100万</p>
+                    <p>2030年全球人才缺口</p>
+                    <p>工程师年薪高达<span class="highlight">$497,000</span></p>
+                </div>
+                <div>
+                    <h3>成本危机</h3>
+                    <p class="big-number">15亿美元</p>
+                    <p>3nm GPU设计成本</p>
+                    <p>首次流片成功率仅<span class="highlight">32%</span></p>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 40px">
+                <p style="font-size: 28px; text-align: center; color: #ee00ff">
+                    依靠增加人力来满足需求在数学上是不可能的
+                </p>
+            </div>
+        </div>
+        
+        <!-- Slide 4: 市场机会 -->
+        <div class="slide">
+            <h2>巨大的市场机会</h2>
+            <div class="chart">
+                <h3>AI在芯片设计市场</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <p>2023年</p>
+                        <p class="big-number">$18亿</p>
+                    </div>
+                    <div style="font-size: 48px; color: #00d9ff">→</div>
+                    <div>
+                        <p>2033年</p>
+                        <p class="big-number">$276亿</p>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 20px">
+                    年复合增长率 <span class="highlight">31.4%</span>
+                </p>
+            </div>
+            <div class="grid" style="margin-top: 30px">
+                <div class="card">
+                    <h4>中国市场</h4>
+                    <p>3600+家IC设计企业</p>
+                    <p>88%公司少于100人</p>
+                </div>
+                <div class="card">
+                    <h4>政策支持</h4>
+                    <p>大基金三期475亿美元</p>
+                    <p>重点支持AI+EDA</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: 我们的解决方案 -->
+        <div class="slide">
+            <h2>AI虚拟芯片设计公司</h2>
+            <h3>完整的虚拟设计团队</h3>
+            <div class="grid-3">
+                <div class="card slide-up">
+                    <h4>虚拟架构师</h4>
+                    <p>自动分析需求</p>
+                    <p>架构探索优化</p>
+                </div>
+                <div class="card slide-up" style="animation-delay: 0.2s">
+                    <h4>虚拟RTL工程师</h4>
+                    <p>97.4%语法正确率</p>
+                    <p>支持复杂协议</p>
+                </div>
+                <div class="card slide-up" style="animation-delay: 0.4s">
+                    <h4>虚拟验证工程师</h4>
+                    <p>95%+覆盖率</p>
+                    <p>自动Debug修复</p>
+                </div>
+            </div>
+            <p style="text-align: center; font-size: 28px; margin-top: 40px">
+                客户只需提交设计规格，我们交付可制造的芯片设计
+            </p>
+        </div>
+        
+        <!-- Slide 6: 技术架构 -->
+        <div class="slide">
+            <h2>革命性的技术架构</h2>
+            <h3>双循环验证系统</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>内循环：模块级验证</h4>
+                    <p>AI生成RTL → Lint检查 → 仿真验证 → 综合检查</p>
+                    <p>自动修复直至通过</p>
+                    <p><span class="highlight">每行代码都经过验证</span></p>
+                </div>
+                <div class="card">
+                    <h4>外循环：系统级优化</h4>
+                    <p>架构分解 → 模块验证 → 系统集成 → PPA分析</p>
+                    <p>AI自主架构调整</p>
+                    <p><span class="highlight">模拟资深架构师思维</span></p>
+                </div>
+            </div>
+            <div class="card" style="background: rgba(238, 0, 255, 0.1); border-color: #ee00ff">
+                <p style="text-align: center; font-size: 24px">
+                    质量保证：生成即验证，确保100%正确性
+                </p>
+            </div>
+        </div>
+        
+        <!-- Slide 7: Terminal界面 -->
+        <div class="slide">
+            <h2>完美契合工程师习惯</h2>
+            <h3>Terminal驱动的多Agent系统</h3>
+            <div class="code-block">
+                <p class="comment"># 架构Agent分析需求</p>
+                <p class="command">$ chimera arch analyze spec.pdf</p>
+                <p class="output">> 识别到处理器设计需求，建议采用5级流水线...</p>
+                <br>
+                <p class="comment"># RTL Agent生成代码</p>
+                <p class="command">$ chimera rtl generate --arch pipeline_5stage</p>
+                <p class="output">> 生成core.v, alu.v, decoder.v...</p>
+                <br>
+                <p class="comment"># 验证Agent自动测试</p>
+                <p class="command">$ chimera verify run --tb auto --coverage full</p>
+                <p class="output">> 运行10000个测试用例，覆盖率98.5%...</p>
+            </div>
+            <ul style="margin-top: 30px">
+                <li>零学习成本：芯片工程师的天然工作方式</li>
+                <li>完美集成：轻松嵌入现有Makefile和脚本</li>
+                <li>透明可控：每个操作都有清晰日志</li>
+            </ul>
+        </div>
+        
+        <!-- Slide 8: 数据飞轮 -->
+        <div class="slide">
+            <h2>数据飞轮效应</h2>
+            <h3>越用越强的AI系统</h3>
+            <div class="chart">
+                <h4>AI能力增长曲线</h4>
+                <div style="margin: 30px 0">
+                    <p>第1个项目</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%"></div>
+                    </div>
+                    <p>AI完成60%，人工40%</p>
+                </div>
+                <div style="margin: 30px 0">
+                    <p>第10个项目</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%"></div>
+                    </div>
+                    <p>AI完成80%，人工20%</p>
+                </div>
+                <div style="margin: 30px 0">
+                    <p>第100个项目</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 95%"></div>
+                    </div>
+                    <p>AI完成95%，人工5%</p>
+                </div>
+            </div>
+            <p style="text-align: center; font-size: 24px; color: #ee00ff">
+                每个项目的数据都是独特的竞争壁垒
+            </p>
+        </div>
+        
+        <!-- Slide 9: 竞争优势 -->
+        <div class="slide">
+            <h2>为什么是我们？</h2>
+            <h3>EDA巨头不会革自己的命</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>商业模式矛盾</h4>
+                    <p>• 按"座位"收费模式</p>
+                    <p>• AI提效10倍=收入降90%</p>
+                    <p>• 股东不允许自我颠覆</p>
+                </div>
+                <div class="card">
+                    <h4>历史证明</h4>
+                    <p>• Uber不是出租车公司创办</p>
+                    <p>• Netflix不是Blockbuster创新</p>
+                    <p>• Tesla不是传统车企孵化</p>
+                </div>
+            </div>
+            <div class="card" style="background: rgba(0, 217, 255, 0.1); margin-top: 30px">
+                <h4>我们的定位：协同而非对抗</h4>
+                <p>• 我们是EDA工具的"超级用户"</p>
+                <p>• 帮助他们触达更多中小客户</p>
+                <p>• 创造1+1>2的价值</p>
+            </div>
+        </div>
+        
+        <!-- Slide 10: 商业模式 -->
+        <div class="slide">
+            <h2>清晰的商业模式</h2>
+            <h3>设计即服务 + 平台赋能</h3>
+            <div class="grid">
+                <div>
+                    <h4>第一阶段：AI设计服务（60%收入）</h4>
+                    <table>
+                        <tr>
+                            <th>项目规模</th>
+                            <th>价格</th>
+                            <th>交付周期</th>
+                        </tr>
+                        <tr>
+                            <td>小型(&lt;50万门)</td>
+                            <td>20-40万</td>
+                            <td>2-3周</td>
+                        </tr>
+                        <tr>
+                            <td>中型(50-500万门)</td>
+                            <td>80-200万</td>
+                            <td>1-2月</td>
+                        </tr>
+                        <tr>
+                            <td>大型(&gt;500万门)</td>
+                            <td>300-800万</td>
+                            <td>3-6月</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <h4>第二阶段：SaaS平台（30%收入）</h4>
+                    <div class="card">
+                        <p><strong>RTL Assistant</strong>：5万/年</p>
+                        <p><strong>Verification Suite</strong>：15万/年</p>
+                        <p><strong>Design Explorer</strong>：30万/年</p>
+                    </div>
+                    <h4>增值服务（10%收入）</h4>
+                    <p>• 定制AI模型：50-100万</p>
+                    <p>• 设计咨询：30万/月</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 11: 成本优势 -->
+        <div class="slide">
+            <h2>革命性的成本结构</h2>
+            <h3>AI驱动75%成本降低</h3>
+            <table style="font-size: 24px">
+                <tr>
+                    <th>成本项目</th>
+                    <th>传统模式</th>
+                    <th>我们的模式</th>
+                    <th>节省比例</th>
+                </tr>
+                <tr>
+                    <td>设计工程师(10人)</td>
+                    <td>$2.0M/年</td>
+                    <td>2人+AI</td>
+                    <td class="highlight">80%</td>
+                </tr>
+                <tr>
+                    <td>验证工程师(15人)</td>
+                    <td>$2.25M/年</td>
+                    <td>1人+AI</td>
+                    <td class="highlight">93%</td>
+                </tr>
+                <tr>
+                    <td>EDA工具(25席)</td>
+                    <td>$1.25M/年</td>
+                    <td>5席+云端</td>
+                    <td class="highlight">60%</td>
+                </tr>
+                <tr>
+                    <td><strong>年度总成本</strong></td>
+                    <td><strong>$6.1M</strong></td>
+                    <td><strong>$1.5M</strong></td>
+                    <td class="highlight"><strong>75%</strong></td>
+                </tr>
+            </table>
+            <p style="text-align: center; font-size: 28px; margin-top: 40px; color: #00d9ff">
+                同样的项目，1/4的成本
+            </p>
+        </div>
+        
+        <!-- Slide 12: 市场验证 -->
+        <div class="slide">
+            <h2>已有进展与验证</h2>
+            <div class="grid">
+                <div>
+                    <h3>mcp4eda.cn平台</h3>
+                    <div class="card">
+                        <p>✓ MCP协议成功集成</p>
+                        <p>✓ 500+注册用户</p>
+                        <p>✓ 自然语言设计交互</p>
+                        <p>✓ 概念验证完成</p>
+                    </div>
+                </div>
+                <div>
+                    <h3>Claude Code实践</h3>
+                    <div class="card">
+                        <p>✓ RISC-V解码器自动生成</p>
+                        <p>✓ AXI协议转换器设计</p>
+                        <p>✓ UVM测试平台生成</p>
+                        <p>✓ 开发时间：1周→2小时</p>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center; font-size: 28px; margin-top: 40px; color: #ee00ff">
+                技术可行性已得到充分验证
+            </p>
+        </div>
+        
+        <!-- Slide 13: 团队优势 -->
+        <div class="slide">
+            <h2>稀缺的复合型团队</h2>
+            <div style="text-align: center; margin: 60px 0">
+                <div style="display: inline-block; margin: 0 40px">
+                    <div class="big-number">15年</div>
+                    <p>半导体行业经验</p>
+                </div>
+                <div style="display: inline-block; font-size: 48px; color: #00d9ff; vertical-align: middle">+</div>
+                <div style="display: inline-block; margin: 0 40px">
+                    <div class="big-number">AI</div>
+                    <p>深度实践经验</p>
+                </div>
+                <div style="display: inline-block; font-size: 48px; color: #00d9ff; vertical-align: middle">+</div>
+                <div style="display: inline-block; margin: 0 40px">
+                    <div class="big-number">Claude</div>
+                    <p>早期深度用户</p>
+                </div>
+            </div>
+            <div class="card" style="margin: 40px auto; max-width: 600px">
+                <p style="text-align: center; font-size: 24px">
+                    这种组合在全球范围内极为稀缺
+                </p>
+            </div>
+            <h3>计划团队结构（种子轮）</h3>
+            <div class="grid-3">
+                <div class="card">
+                    <p><strong>技术团队</strong></p>
+                    <p>• CTO/AI负责人</p>
+                    <p>• 芯片架构师×2</p>
+                    <p>• AI工程师×3</p>
+                </div>
+                <div class="card">
+                    <p><strong>开发团队</strong></p>
+                    <p>• 全栈工程师×2</p>
+                    <p>• EDA集成工程师×2</p>
+                </div>
+                <div class="card">
+                    <p><strong>商业团队</strong></p>
+                    <p>• BD经理</p>
+                    <p>• 项目经理</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 14: 财务预测 -->
+        <div class="slide">
+            <h2>保守但可实现的增长路径</h2>
+            <div class="chart">
+                <h3>三年财务预测</h3>
+                <div class="grid-3" style="text-align: center">
+                    <div>
+                        <p>第一年</p>
+                        <p class="big-number">500万</p>
+                        <p>5个项目</p>
+                        <p>技术验证</p>
+                    </div>
+                    <div>
+                        <p>第二年</p>
+                        <p class="big-number">3000万</p>
+                        <p>20个项目</p>
+                        <p>盈亏平衡</p>
+                    </div>
+                    <div>
+                        <p>第三年</p>
+                        <p class="big-number">1亿</p>
+                        <p>50+项目</p>
+                        <p>25%净利率</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid" style="margin-top: 40px">
+                <div class="card">
+                    <h4>关键指标</h4>
+                    <p>• 毛利率：60-70%</p>
+                    <p>• 人效提升：10倍</p>
+                    <p>• 客户ROI：2倍</p>
+                </div>
+                <div class="card">
+                    <h4>收入构成</h4>
+                    <p>• 项目服务：60%</p>
+                    <p>• SaaS订阅：30%</p>
+                    <p>• 增值服务：10%</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 15: 融资需求 -->
+        <div class="slide">
+            <h2>融资计划</h2>
+            <h3>种子轮：1000万人民币</h3>
+            <div class="chart">
+                <h4>资金用途</h4>
+                <div style="display: flex; justify-content: space-around; align-items: center; margin: 40px 0">
+                    <div style="text-align: center">
+                        <div style="width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #00d9ff, #0080ff); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px">
+                            <span style="font-size: 36px; font-weight: bold">60%</span>
+                        </div>
+                        <p>技术研发</p>
+                        <p>600万</p>
+                    </div>
+                    <div style="text-align: center">
+                        <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #ee00ff, #aa00ff); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px">
+                            <span style="font-size: 28px; font-weight: bold">25%</span>
+                        </div>
+                        <p>团队建设</p>
+                        <p>250万</p>
+                    </div>
+                    <div style="text-align: center">
+                        <div style="width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, #00d9ff, #00ffaa); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px">
+                            <span style="font-size: 24px; font-weight: bold">15%</span>
+                        </div>
+                        <p>市场&运营</p>
+                        <p>150万</p>
+                    </div>
+                </div>
+            </div>
+            <h4>18个月里程碑</h4>
+            <ul>
+                <li>完成5个核心Agent开发</li>
+                <li>3-5个付费标杆项目</li>
+                <li>验证商业模式可行性</li>
+                <li>为A轮融资做好准备</li>
+            </ul>
+        </div>
+        
+        <!-- Slide 16: 发展路线图 -->
+        <div class="slide">
+            <h2>清晰的发展路线图</h2>
+            <div style="position: relative; margin: 60px 0">
+                <div style="position: absolute; left: 0; right: 0; top: 50%; height: 4px; background: linear-gradient(90deg, #00d9ff, #ee00ff)"></div>
+                <div class="grid-3" style="position: relative">
+                    <div class="card" style="text-align: center">
+                        <h4>第一阶段</h4>
+                        <p><strong>0-6个月</strong></p>
+                        <p>RTL生成+验证</p>
+                        <p>种子客户POC</p>
+                        <p>技术验证</p>
+                    </div>
+                    <div class="card" style="text-align: center">
+                        <h4>第二阶段</h4>
+                        <p><strong>6-18个月</strong></p>
+                        <p>综合+物理设计</p>
+                        <p>商业项目交付</p>
+                        <p>平台化开发</p>
+                    </div>
+                    <div class="card" style="text-align: center">
+                        <h4>第三阶段</h4>
+                        <p><strong>18-36个月</strong></p>
+                        <p>全流程自动化</p>
+                        <p>SaaS平台上线</p>
+                        <p>国际化扩张</p>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center; font-size: 28px; color: #ee00ff; margin-top: 40px">
+                从服务到平台，从中国到全球
+            </p>
+        </div>
+        
+        <!-- Slide 17: 风险与机遇 -->
+        <div class="slide">
+            <h2>风险管理</h2>
+            <div class="grid">
+                <div>
+                    <h3>主要风险</h3>
+                    <div class="card">
+                        <p><strong>技术风险</strong></p>
+                        <p>• AI可靠性挑战</p>
+                        <p>→ 双循环验证系统</p>
+                    </div>
+                    <div class="card">
+                        <p><strong>市场风险</strong></p>
+                        <p>• 客户接受度</p>
+                        <p>→ 渐进式推广策略</p>
+                    </div>
+                    <div class="card">
+                        <p><strong>竞争风险</strong></p>
+                        <p>• 巨头跟进</p>
+                        <p>→ 数据飞轮壁垒</p>
+                    </div>
+                </div>
+                <div>
+                    <h3>巨大机遇</h3>
+                    <div class="card" style="background: rgba(0, 217, 255, 0.1)">
+                        <p class="big-number">31.4%</p>
+                        <p>AI+EDA市场增速</p>
+                    </div>
+                    <div class="card" style="background: rgba(238, 0, 255, 0.1)">
+                        <p class="big-number">10倍</p>
+                        <p>预期投资回报</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 18: 为什么是现在 -->
+        <div class="slide">
+            <h2>为什么是现在？</h2>
+            <div class="grid">
+                <div class="card fade-in">
+                    <h4>技术成熟</h4>
+                    <p>• LLM能力突破</p>
+                    <p>• 中科院"启蒙"验证可行</p>
+                    <p>• EDA API日趋开放</p>
+                </div>
+                <div class="card fade-in" style="animation-delay: 0.2s">
+                    <h4>市场临界点</h4>
+                    <p>• 人才成本不可持续</p>
+                    <p>• 中小企业被边缘化</p>
+                    <p>• 行业呼唤变革</p>
+                </div>
+                <div class="card fade-in" style="animation-delay: 0.4s">
+                    <h4>政策东风</h4>
+                    <p>• 国家大力支持</p>
+                    <p>• 资本市场活跃</p>
+                    <p>• 自主可控需求</p>
+                </div>
+                <div class="card fade-in" style="animation-delay: 0.6s">
+                    <h4>团队就绪</h4>
+                    <p>• 技术积累完成</p>
+                    <p>• 概念验证成功</p>
+                    <p>• 蓄势待发</p>
+                </div>
+            </div>
+            <p style="text-align: center; font-size: 32px; margin-top: 40px; color: #00d9ff">
+                完美的时间窗口，不容错过
+            </p>
+        </div>
+        
+        <!-- Slide 19: 投资亮点 -->
+        <div class="slide">
+            <h2>投资亮点总结</h2>
+            <div class="grid">
+                <div class="card" style="background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(0, 217, 255, 0.2))">
+                    <h4>🎯 精准定位</h4>
+                    <p>全球首个AI虚拟芯片设计公司</p>
+                    <p>解决行业最大痛点</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, rgba(238, 0, 255, 0.1), rgba(238, 0, 255, 0.2))">
+                    <h4>📈 巨大市场</h4>
+                    <p>千亿级市场规模</p>
+                    <p>31.4%年增长率</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, rgba(0, 255, 170, 0.1), rgba(0, 255, 170, 0.2))">
+                    <h4>💡 技术领先</h4>
+                    <p>已验证的技术方案</p>
+                    <p>独特的数据飞轮</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, rgba(255, 217, 0, 0.1), rgba(255, 217, 0, 0.2))">
+                    <h4>👥 顶尖团队</h4>
+                    <p>稀缺的复合背景</p>
+                    <p>深厚的行业积累</p>
+                </div>
+            </div>
+            <div class="card" style="background: linear-gradient(135deg, #1a1a2e, #2a2a3e); margin-top: 40px; text-align: center">
+                <p style="font-size: 32px; margin-bottom: 20px">投资回报预期</p>
+                <p class="big-number" style="font-size: 96px">10X+</p>
+                <p style="font-size: 24px">5年内通过IPO或并购退出</p>
+            </div>
+        </div>
+        
+        <!-- Slide 20: 行动呼吁 -->
+        <div class="slide title-slide">
+            <h2 style="font-size: 64px; margin-bottom: 40px">共创芯片设计的AI未来</h2>
+            <div class="card" style="background: rgba(255, 255, 255, 0.1); max-width: 800px; margin: 0 auto">
+                <p style="font-size: 28px; margin-bottom: 30px">
+                    我们正在开启一个新时代：
+                </p>
+                <p style="font-size: 24px; margin-bottom: 20px">
+                    让每一家公司都能拥有世界级的芯片设计能力
+                </p>
+                <p style="font-size: 24px; margin-bottom: 40px">
+                    让创新不再被成本束缚
+                </p>
+                <p style="font-size: 32px; color: #00d9ff">
+                    诚邀您成为这场革命的合作伙伴
+                </p>
+            </div>
+            <div style="margin-top: 60px">
+                <p style="font-size: 24px; color: #666">联系方式：[您的联系方式]</p>
+            </div>
+        </div>
+        
+        <!-- 导航按钮 -->
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn">上一页</button>
+            <button class="nav-btn" id="next-btn">下一页</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+        
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            document.getElementById('current-slide').textContent = index + 1;
+            
+            // 更新导航按钮状态
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').disabled = index === totalSlides - 1;
+            
+            // 触发动画
+            const animatedElements = slides[index].querySelectorAll('.fade-in, .slide-up');
+            animatedElements.forEach((el, i) => {
+                el.style.animation = 'none';
+                setTimeout(() => {
+                    el.style.animation = '';
+                }, 10);
+            });
+            
+            // 进度条动画
+            const progressBars = slides[index].querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        }
+        
+        document.getElementById('next-btn').addEventListener('click', () => {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        });
+        
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        });
+        
+        // 键盘导航
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            } else if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            } else if (e.key === 'f' || e.key === 'F') {
+                // 全屏切换
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            }
+        });
+        
+        // 初始化
+        showSlide(0);
+    </script>
+</body>
+</html>
